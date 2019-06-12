@@ -370,7 +370,7 @@ main = hspec $ do
             dma `shouldBe` 0xFF46
             bgp `shouldBe` 0xFF47
             vram `shouldBe` 0x8000
-            background1 `shouldBe` 0x9800
+            background `shouldBe` 0x9800
             background2 `shouldBe` 0x9C00
             hram `shouldBe` 0xFF80
             oam `shouldBe` 0xFE00
