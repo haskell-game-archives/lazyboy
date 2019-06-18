@@ -168,3 +168,16 @@ data Instruction =
   | BYTES [Word8]             -- ^ Define some bytes in the form of a Word8 list with a global label.
 
   deriving (Eq)
+
+-- | A typeclass for providing variable-width integer operations.
+class Lazynum a where
+  dec :: a -> Lazyboy ()
+  inc :: a -> Lazyboy ()
+
+instance Lazynum Register8 where
+  dec r8 = tell [DECr r8]
+  inc r8 = tell [INCr r8]
+
+instance Lazynum Register16 where
+  dec r16 = tell [DECrr r16]
+  inc r16 = tell [INCrr r16]

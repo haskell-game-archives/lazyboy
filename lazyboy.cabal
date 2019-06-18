@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 34f0bae356e4c05dfe779d5d3aff89364296c81fed4ff98ee78c7c270671d92d
+-- hash: 40ed3a8c4154cea848dce54c8ed9103dcecbe85b39d4e4716a55d48a59198782
 
 name:           lazyboy
 version:        0.2.2.1
@@ -31,6 +31,7 @@ source-repository head
 
 library
   exposed-modules:
+      Data.Bits.Extra
       Lazyboy
       Lazyboy.Constants
       Lazyboy.Control
