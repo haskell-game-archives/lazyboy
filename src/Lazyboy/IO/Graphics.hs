@@ -64,10 +64,6 @@ updateTilemap tiles = do
           (high, low) = split count
           count = fromIntegral $ length tiles - 1
 
-unsafeSetTileFromRegisters :: Register16 -> Register8 -> Lazyboy ()
-unsafeSetTileFromRegisters offset tile = do
-    tell [ADDHLrr DE]
-
 -- | Write a Tile ID to the nth background tile.
 setTileAtIndex :: Integer -> Integer -> Lazyboy ()
 setTileAtIndex offset tile
