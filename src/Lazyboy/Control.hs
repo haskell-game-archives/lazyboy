@@ -146,7 +146,7 @@ not action = do
 -- | Assign boolean values to two registers based on the result flags of
 -- some conditions and then AND them and return the result.
 and :: Lazyboy Condition -> Lazyboy Condition -> Lazyboy Condition
-and a b = do
+and a b = protecting [AF, HL] $ do
   a' <- a
   cond a' $ do
     tell [LDrn L 1]
@@ -159,7 +159,7 @@ and a b = do
 -- | Assign boolean values to two registers based on the result flags of
 -- some conditions and then OR them and return the result.
 or :: Lazyboy Condition -> Lazyboy Condition -> Lazyboy Condition
-or a b = do
+or a b = protecting [AF, HL] $ do
   a' <- a
   cond a' $ do
     tell [LDrn L 1]
@@ -170,7 +170,7 @@ or a b = do
   return Zero
 
 -- | An implementation of an imperative "while" loop.
-while :: Lazyboy Condition -> Lazyboy () -> Lazyboy ()
+while :: Lazyboy Condition -> Lazyboy a -> Lazyboy ()
 while condition block = do
   loop <- getLocalLabel
   skip <- getLocalLabel
@@ -180,3 +180,10 @@ while condition block = do
   block
   tell [JP $ Name loop]
   tell [LABEL skip]
+
+protecting :: [Register16] -> Lazyboy a -> Lazyboy a
+protecting flags block = do
+  mapM_ push flags
+  result <- block
+  mapM_ pop flags
+  return result

@@ -42,9 +42,8 @@ instance (Show a, Typeable a) => Exception (GraphicsException a) where
 
 -- | Update the whole background tilemap.
 updateTilemap :: Tilemap -> Lazyboy ()
-updateTilemap tiles = do
+updateTilemap tiles = protecting [HL, DE, BC] $ do
     content <- getLocalLabel
-
     -- embed the tile data in the ROM
     content <- embedBytes bytes
     -- zero BC out for use as a counter
