@@ -181,3 +181,11 @@ instance Lazynum Register8 where
 instance Lazynum Register16 where
   dec r16 = tell [DECrr r16]
   inc r16 = tell [INCrr r16]
+
+-- | Push a Register16 onto the stack.
+push :: Register16 -> Lazyboy ()
+push r = tell [PUSH r]
+
+-- | Pop a Register16 from the stack.
+pop :: Register16 -> Lazyboy ()
+pop r = tell [POP r]
