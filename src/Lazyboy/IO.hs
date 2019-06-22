@@ -98,11 +98,11 @@ byte reg val = tell [LDrn reg val]
 
 -- | Loads a Word8 into a Location.
 write :: Location -> Word8 -> Lazyboy ()
-write addr val = tell [LDrrnn HL addr, LDHLn val]
+write addr val = protecting [HL] $ tell [LDrrnn HL addr, LDHLn val]
 
 -- | Copy a region of memory (limit 255 bytes) to a destination.
 memcpy :: Location -> Location -> Word8 -> Lazyboy ()
-memcpy src dest len = do
+memcpy src dest len = protecting [DE, HL, BC, AF] $ do
     -- load the destination into DE, source into HL and length into B
     tell [LDrrnn HL src, LDrrnn DE dest, LDrn B len]
     withLocalLabel $ \label -> do
@@ -111,7 +111,7 @@ memcpy src dest len = do
 
 -- | Sets a region of memory to a Word8 value (limit 255 bytes).
 memset :: Location -> Word8 -> Word8 -> Lazyboy ()
-memset dest len value = do
+memset dest len value = protecting [AF, HL, BC] $ do
     -- load the destination into HL, length into B and value into A
     tell [LDrrnn HL dest, LDrn B len, LDrn A value]
     withLocalLabel $ \label -> do
@@ -120,7 +120,7 @@ memset dest len value = do
 
 -- | Executes an action when vertical blank occurs.
 onVblank :: Lazyboy () -> Lazyboy ()
-onVblank block = do
+onVblank block = protecting [AF] $ do
     withLocalLabel $ \label -> do
         tell [LDAnn $ Address ly, CPn 145]
         tell [JPif NonZero $ Name label]
