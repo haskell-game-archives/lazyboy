@@ -87,11 +87,11 @@ instance Show Instruction where
     -- stack manipulation
     show (PUSH SP) = throw InvalidStackOperation
     show (PUSH PC) = throw InvalidStackOperation
-    show (PUSH r1) = printf "PUSH %s" r1
+    show (PUSH r1) = printf "push %s" r1
 
     show (POP SP) = throw InvalidStackOperation
     show (POP PC) = throw InvalidStackOperation
-    show (POP r1) = printf "POP %s" r1
+    show (POP r1) = printf "pop %s" r1
 
     -- jumps
     show (JP v1@(Address _)) = printf "jp %s" v1
