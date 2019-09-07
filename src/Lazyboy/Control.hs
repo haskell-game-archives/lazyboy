@@ -148,11 +148,9 @@ not action = do
 and :: Lazyboy Condition -> Lazyboy Condition -> Lazyboy Condition
 and a b = protecting [AF, HL] $ do
   a' <- a
-  cond a' $ do
-    tell [LDrn L 1]
+  cond a' $ tell [LDrn L 1]
   b' <- b
-  cond b' $ do
-    tell [LDrn A 1]
+  cond b' $ tell [LDrn A 1]
   tell [ANDr L]
   return Zero
 
@@ -161,11 +159,9 @@ and a b = protecting [AF, HL] $ do
 or :: Lazyboy Condition -> Lazyboy Condition -> Lazyboy Condition
 or a b = protecting [AF, HL] $ do
   a' <- a
-  cond a' $ do
-    tell [LDrn L 1]
+  cond a' $ tell [LDrn L 1]
   b' <- b
-  cond b' $ do
-    tell [LDrn A 1]
+  cond b' $ tell [LDrn A 1]
   tell [ORr L]
   return Zero
 
@@ -175,8 +171,7 @@ while condition block = do
   loop <- getLocalLabel
   skip <- getLocalLabel
   tell [LABEL loop]
-  if' (not condition) $ do
-    tell [JP $ Name skip]
+  if' (not condition) $ tell [JP $ Name skip]
   block
   tell [JP $ Name loop]
   tell [LABEL skip]

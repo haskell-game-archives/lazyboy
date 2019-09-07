@@ -15,14 +15,14 @@ import           Prelude             hiding ((&&), (/=), (<), (==), (>), (||))
 main :: IO ()
 main = rom >>= T.putStrLn
     where rom = compileROM $ do
-            let tilemap = matrix 31 31 $ \_ -> 0
+            let tilemap = matrix 31 31 $ const 0
             let sprite = [0x00,0x00,0x00,0x00,0x24,0x24,0x00,0x00,0x81,0x81,0x7e,0x7e,0x00,0x00,0x00,0x00]
             sprite' <- embedBytes sprite
             setScroll (0, 0)
             setBackgroundPalette defaultPalette
             onVblank $ do
                 disableLCD
-                memcpy (Name sprite') (Address $ 0x9000) $ fromIntegral $ length sprite
+                memcpy (Name sprite') (Address 0x9000) $ fromIntegral $ length sprite
                 updateTilemap tilemap
                 setLCDControl $ defaultLCDControl { lcdDisplayEnable = True, lcdBackgroundEnable = True }
             freeze

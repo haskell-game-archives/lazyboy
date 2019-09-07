@@ -120,7 +120,7 @@ memset dest len value = protecting [AF, HL, BC] $ do
 
 -- | Executes an action when vertical blank occurs.
 onVblank :: Lazyboy () -> Lazyboy ()
-onVblank block = protecting [AF] $ do
+onVblank block = protecting [AF] $ 
     withLocalLabel $ \label -> do
         tell [LDAnn $ Address ly, CPn 145]
         tell [JPif NonZero $ Name label]

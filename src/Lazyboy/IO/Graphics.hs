@@ -28,13 +28,13 @@ import           Text.Printf
 import           Type.Reflection              (Typeable)
 
 -- | Type alias that represents a tile map as a Matrix.
-type Tilemap = Matrix Integer
+type Tilemap = Matrix Word8 
 
 -- | An exception type for use in this module.
 data GraphicsException a = ExceedsBounds a (a, a)
 
 -- | An instance of Show for formatting exception messages.
-instance (Show a) => Show (GraphicsException a) where
+instance Show a => Show (GraphicsException a) where
     show (ExceedsBounds value bounds) = mconcat ["A value of '", show value, "' was provided to a function accepting a value in the range of (", show $ fst bounds, ", ", show $ snd bounds, ")!"]
 
 -- | An instance of Exception for the exceptional type.
@@ -59,7 +59,7 @@ updateTilemap tiles = protecting [HL, DE, BC] $ do
         inc DE
         inc BC
 
-    where bytes = map fromIntegral $ toList tiles
+    where bytes = toList tiles
           (high, low) = split count
           count = fromIntegral $ length tiles - 1
 
@@ -85,10 +85,11 @@ setTile x y tile
 
 -- | Set the X scroll co-ordinate.
 setScrollX :: Word8 -> Lazyboy ()
-setScrollX x = write (Address GB.scx) x
+setScrollX = write (Address GB.scx) 
 
+-- | Set the Y scroll co-ordinate.
 setScrollY :: Word8 -> Lazyboy ()
-setScrollY y = write (Address GB.scy) y
+setScrollY = write (Address GB.scy)
 
 -- | Set the X and Y scroll co-ordinates.
 setScroll :: (Word8, Word8) -> Lazyboy ()
