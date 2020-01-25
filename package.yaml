@@ -35,17 +35,17 @@ dependencies:
 library:
   source-dirs: src
 
-#executables:
-#  lazyboy:
-#    main:                Main.hs
-#    source-dirs:         app
-#    ghc-options:
-#    - -threaded
-#    - -rtsopts
-#    - -with-rtsopts=-N
-#    dependencies:
-#    - lazyboy
-#
+executables:
+ lazyboy:
+   main:                Main.hs
+   source-dirs:         example
+   ghc-options:
+   - -threaded
+   - -rtsopts
+   - -with-rtsopts=-N
+   dependencies:
+   - lazyboy
+
 tests:
   lazyboy-test:
     main:                Spec.hs
